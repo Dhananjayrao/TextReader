@@ -1,0 +1,18 @@
+
+body {
+    display:flex;
+    margin:0;
+    justify-content:center;
+}
+top-bar{
+    display: flex;
+    justify-content: center;
+}
+pdf-viewer{
+    display:flex;
+    flex-direction:column
+}
+canvas{
+    display: inline;
+    width:50vw;
+}
