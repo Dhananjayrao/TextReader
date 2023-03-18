@@ -7,20 +7,26 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/style.css">
-        <script src="./js/webgazer.js" defer></script>
-        <script src="./js/script.js" defer></script>
+        <script src="./js/webgazer.js"></script>
+        <!-- <script src="./js/script.js" defer></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 
     </head>
     <body>
-        <div class="pdf-viewer">
-            <div class="top-bar">
-                <button class="btn" id="prev-page">Prev Page</button>
-                <button class="btn" id="next-page">Next Page</button> 
-            Page <span class="page-info" ><span id='page-num'></span> of <span id="page-count"></span></span>
-        </div>
-        <canvas id="pdf-render"></canvas>
-        </div>
+        <form action="viewer.html" class="pdf-input">
+            <input type="file" accept=".pdf" class="btn" id="pdf-file">
+            <button type="submit" class="btn" id="submit-btn">View PDF</button>
+        </form>
+        <script>
+            webgazer.begin()
+            const fileElement=document.getElementById('pdf-file')
+            let fileName=null
+            fileElement.addEventListener('input',event => {
+            fileName=fileElement.files[0].name
+            console.log(fileName)
+            localStorage.setItem('url','../docs/'+fileName)
+            })
+        </script>
     </body>
 </html>
 

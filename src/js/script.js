@@ -1,7 +1,6 @@
 let startLooktime=Number.POSITIVE_INFINITY
-const delay = 2000
-// const LEFT_CUTOFF=window.innerWidth/4  //left margin of page
-// const RIGHT_CUTOFF=window.innerWidth-(window.innerWidth/4) //right margin of page
+const delay = 1000
+url=localStorage.getItem('url')
 const canvasDiv=document.getElementById('pdf-render');
 const LEFT_CUTOFF=canvasDiv.getBoundingClientRect().left;
 const RIGHT_CUTOFF=canvasDiv.getBoundingClientRect().right;
@@ -10,15 +9,19 @@ let lookDirection=null
 window.saveDataAcrossSessions=true
 webgazer.setGazeListener((data,timestamp) => {
     if (data==null) return
+    console.log(timestamp)
     if (data.x<LEFT_CUTOFF && lookDirection!=='LEFT'){
         startLooktime=timestamp
         lookDirection='LEFT'
+        webgazer.showPredictionPoints(true) 
     } else if(data.x>RIGHT_CUTOFF && lookDirection!=='RIGHT'){
         startLooktime=timestamp
         lookDirection='RIGHT'
+        webgazer.showPredictionPoints(true)
     } else if(data.x>=LEFT_CUTOFF && data.x<=RIGHT_CUTOFF){
         startLooktime=Number.POSITIVE_INFINITY
         lookDirection=null
+        webgazer.showPredictionPoints(false) 
     }
     async function check(){
         if (startLooktime+delay<timestamp){
@@ -39,7 +42,8 @@ webgazer.setGazeListener((data,timestamp) => {
     check();
 }).begin()
 
-const url='../docs/cn-a-top-down-approach.pdf';
+webgazer.showVideoPreview(false) //get rid of the video window and the red point
+
 let pdfDoc=null,
 pageNum=1,
 pageIsRendering=false;

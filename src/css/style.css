@@ -1,8 +1,12 @@
 
-body {
+body{
     display:flex;
+    height: 100vh;
     margin:0;
-    justify-content:center;
+    padding:0;
+    font-family: sans-serif;
+    justify-content: center;
+    background: #1B4965;
 }
 top-bar{
     display: flex;
@@ -16,3 +20,55 @@ canvas{
     display: inline;
     width:50vw;
 }
+/* .pdf-input{
+    display: flex;
+    justify-content: center;
+} */
+#overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  /* #overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }*/
+  
+  .pdf-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    margin: auto auto;
+    border-radius: 2%;
+    box-shadow: 0px 26px 21px 0px rgba(0,0,0,0.75);
+    padding: 5vh;
+    background-color: #62B6CB;
+  }
+
+  .btn{
+        position: relative;
+        display: inline-block;
+        padding: 1vh 2vh;
+        background-color: #BEE9E8;
+        font-size: 16px;
+        overflow: hidden;
+        transition: .5s;
+        margin-top: 3vh;
+        border-radius: 2% 2%;
+  }
