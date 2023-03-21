@@ -1,60 +1,17 @@
-// const handsfree = new Handsfree({weboji: true})
 const canvasDiv = document.getElementById('pdf-render');
 const LEFT_CUTOFF=canvasDiv.getBoundingClientRect().left;
 const RIGHT_CUTOFF=canvasDiv.getBoundingClientRect().right;
-const url='../docs/cn-a-top-down-approach.pdf'
+const RIGHT_END=window.screen.width;
+url = localStorage.getItem('url')
+console.log(url)
 let startLooktime=Number.POSITIVE_INFINITY
 const delay = 70
 let timestamp=0
-let toggleInput=false //false for gaze, true for handtracking
-// handsfree.enablePlugins('browser')
-// handsfree.start();
+let toggleInput=true //false for gaze, true for handtracking
 let lookDirection=null
 
-// handsfree.use('logger', data => {
-//     if (data==null) return
-//     if (data.weboji && data.weboji.pointer) {
-//     const xValue = data.weboji.pointer.x;
-//     console.log(xValue);
-//     const now = new Date();
-//     if (xValue<LEFT_CUTOFF && lookDirection!=='LEFT'){
-//         startLooktime=timestamp
-//         lookDirection='LEFT'
-//         console.log("startLooktime,lookDirection",startLooktime,lookDirection)
-//     }else if(xValue>RIGHT_CUTOFF && lookDirection!=='RIGHT'){
-//         startLooktime=timestamp
-//         lookDirection='RIGHT'
-//         console.log("startLooktime,lookDirection",startLooktime,lookDirection)
-//     } else if(xValue>=LEFT_CUTOFF && xValue<=RIGHT_CUTOFF){
-//         startLooktime=Number.POSITIVE_INFINITY
-//         lookDirection=null
-//     }
-//     async function check(){
-//         console.log("sltm,d,t,ld",startLooktime+delay,timestamp,lookDirection)
-//     if (startLooktime+delay<timestamp){
-//         console.log('here')
-//         console.log(xValue,LEFT_CUTOFF,RIGHT_CUTOFF)
-//         if (lookDirection==="LEFT") {
-//             await showPrevpage();
-//             startLooktime=Number.POSITIVE_INFINITY
-//             lookDirection=null
-//         }
-//         else{
-//             await showNextpage();
-//             startLooktime=Number.POSITIVE_INFINITY
-//             lookDirection=null
-//         }
-//     }
-// }
-// check();
-// timestamp=timestamp+1
-//     } else {
-//     console.log('data.weboji.pointer is undefined');
-//     }
-// })
-
 if (toggleInput==true){
-let handsfree = new Handsfree({hands: true})
+let handsfree = new Handsfree({hands: true,maxNumHands:2,minTrackingConfidence:0.7})
 handsfree.enablePlugins('browser')
 handsfree.start()
 let inDrag=false
@@ -64,97 +21,114 @@ handsfree.use('logger', data =>{
     if (data==null) return
     if (data.hands && data.hands.pointer && data.hands.pinchState){
         if (data.hands.pointer[1].x){
+            if (data.hands.pointer[1].x<RIGHT_CUTOFF && data.hands.pointer[1].x>LEFT_CUTOFF && (data.hands.pinchState[1][0]=="released" || data.hands.pinchState[1][0]=="")){
+                handsfree.plugin.palmPointers.hidePointers()
+            }
+            else if (data.hands.pointer[1].x){
+                handsfree.plugin.palmPointers.showPointers()
+            }
             if (data.hands.pinchState[1][0]=="start" && inDrag==false && data.hands.pointer[1].x>RIGHT_CUTOFF){
-                console.log("here")
                 inDrag=true
                 startDrag=data.hands.pointer[1].x
-            }else if(inDrag==true && data.hands.pinchState[1][0]=="held"){
-                console.log("adding")
-            }else if (data.hands.pinchState[1][0]=="released" && data.hands.pointer[1].x<RIGHT_CUTOFF){
+            }
+            else if(inDrag==true && (data.hands.pinchState[1][0]!="released" || data.hands.pinchState[1][0]=="")){
+                if (i>500){
+                    i=0
+                    inDrag=false
+                    startDrag=0
+                }
+                i+=1
+            }
+            else if (inDrag==true && data.hands.pinchState[1][0]=="released" && data.hands.pointer[1].x<RIGHT_CUTOFF){
+                console.log(data.hands.pinchState[1][0],i)
                 inDrag=false
                 distance=data.hands.pointer[1].x-startDrag
-                console.log(distance)
                 async function checkrighthand(distance){
                     if (distance<0){
                         startDrag=0
+                        i=0
                         await showNextpage();
                     }
                 }
                 checkrighthand(distance)
             }
+            i+=1
         }
         if (data.hands.pointer[0].x){
-            console.log("inDrag",inDrag)
-            console.log(data.hands.pinchState[0][0])
-            if (data.hands.pinchState[0][0]=="start" && inDrag==false && data.hands.pointer[0].x<RIGHT_CUTOFF){
+            if (data.hands.pointer[0].x<RIGHT_CUTOFF && data.hands.pointer[0].x>LEFT_CUTOFF && (data.hands.pinchState[0][0]=="released" || data.hands.pinchState[0][0]=="")){
+                handsfree.plugin.palmPointers.hidePointers()
+            }else if (data.hands.pointer[0].x){
+                handsfree.plugin.palmPointers.showPointers()
+            }
+            if (data.hands.pinchState[0][0]=="start" && inDrag==false && data.hands.pointer[0].x<LEFT_CUTOFF){
                 inDrag=true
                 startDrag=data.hands.pointer[0].x
-                console.log("leftDrag")
-            }else if(inDrag==true && data.hands.pinchState[0][0]=="held"){
-                console.log("dragging")
-            }else if (data.hands.pinchState[0][0]=="released" && data.hands.pointer[0].x>LEFT_CUTOFF){
+            }else if(inDrag==true && data.hands.pinchState[0][0]!="released"){
+                if (i>1000){
+                    i=0
+                    inDrag=false
+                    startDrag=0
+                }
+                i+=1
+            }else if (data.hands.pinchState[0][0]=="released" && data.hands.pointer[0].x>LEFT_CUTOFF && inDrag==true){
                 inDrag=false
-                console.log("done dragging")
                 distance=data.hands.pointer[0].x-startDrag
-                console.log(distance)
                 async function checklefthand(distance){
                     if (distance>0){
+                        i=0
                         startDrag=0
                         await showPrevpage();
                     }
                 }
                 checklefthand(distance)
             }
+            i+=1
         }
-            
-            // console.log('at right side',data.hands.pointer[1].x,data.hands.pinchState[1])
-            // console.log(data.hands)
+    }else{
+        inDrag=false
+        i=0
     }
 })
 }else{
-    handsfree = new Handsfree({weboji: true})
+    handsfree = new Handsfree({weboji:true})
+    console.log(handsfree)  
     handsfree.enablePlugins('browser')
     handsfree.start();
     handsfree.use('logger', data => {
             if (data==null) return
             if (data.weboji && data.weboji.pointer) {
-            const xValue = data.weboji.pointer.x;
-            console.log(xValue);
-            const now = new Date();
-            if (xValue<LEFT_CUTOFF && lookDirection!=='LEFT'){
-                startLooktime=timestamp
-                lookDirection='LEFT'
-                console.log("startLooktime,lookDirection",startLooktime,lookDirection)
-            }else if(xValue>RIGHT_CUTOFF && lookDirection!=='RIGHT'){
-                startLooktime=timestamp
-                lookDirection='RIGHT'
-                console.log("startLooktime,lookDirection",startLooktime,lookDirection)
-            } else if(xValue>=LEFT_CUTOFF && xValue<=RIGHT_CUTOFF){
-                startLooktime=Number.POSITIVE_INFINITY
-                lookDirection=null
-            }
-            async function check(){
-                console.log("sltm,d,t,ld",startLooktime+delay,timestamp,lookDirection)
-            if (startLooktime+delay<timestamp){
-                console.log('here')
-                console.log(xValue,LEFT_CUTOFF,RIGHT_CUTOFF)
-                if (lookDirection==="LEFT") {
-                    await showPrevpage();
+                const xValue = data.weboji.pointer.x;
+                if (xValue<-100 || xValue>RIGHT_END+100) return
+                if (xValue<LEFT_CUTOFF && lookDirection!=='LEFT'){
+                    startLooktime=timestamp
+                    lookDirection='LEFT'
+                    console.log("startLooktime,lookDirection",startLooktime,lookDirection)
+                }else if(xValue>RIGHT_CUTOFF && lookDirection!=='RIGHT'){
+                    startLooktime=timestamp
+                    lookDirection='RIGHT'
+                } else if(xValue>=LEFT_CUTOFF && xValue<=RIGHT_CUTOFF){
                     startLooktime=Number.POSITIVE_INFINITY
                     lookDirection=null
                 }
-                else{
-                    await showNextpage();
-                    startLooktime=Number.POSITIVE_INFINITY
-                    lookDirection=null
+                async function gazecheck(){
+                if (startLooktime+delay<timestamp){
+                    if (lookDirection==="LEFT") {
+                        await showPrevpage();
+                        startLooktime=Number.POSITIVE_INFINITY
+                        lookDirection=null
+                    }
+                    else{
+                        await showNextpage();
+                        startLooktime=Number.POSITIVE_INFINITY
+                        lookDirection=null
+                    }
                 }
             }
-        }
-        check();
-        timestamp=timestamp+1
+            gazecheck();
+            timestamp=timestamp+1
             } else {
-            console.log('data.weboji.pointer is undefined');
-            }
+                console.log('data.weboji.pointer is undefined');
+                }
         })
 }
 let pdfDoc=null,
