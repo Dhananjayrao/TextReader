@@ -1,5 +1,7 @@
 <head>
     <link rel="stylesheet" href="https://unpkg.com/handsfree@8.5.1/build/lib/assets/handsfree.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/handsfree@8.5.1/build/lib/handsfree.js"></script>
   </head>
   
@@ -20,10 +22,17 @@
             </head>
             <body>
                 <div class="pdf-viewer">
+                    <br>
                     <div class="top-bar">
-                        <button class="btn" id="prev-page">Prev Page</button>
-                        <button class="btn" id="next-page">Next Page</button> 
-                    Page <span class="page-info" ><span id='page-num'></span> of <span id="page-count"></span></span>
+                        <button class="btn btn-primary" id="prev-page">Prev Page</button>
+                        <button class="btn btn-primary" id="next-page">Next Page</button> 
+                    <span style="color: aliceblue;">Page <span class="page-info" ><span id='page-num'></span> of <span id="page-count"></span></span></span> 
+                    <div class="btn-group float-end" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class=" btn-success btn-check " name="btnradio" id="btnradio1" autocomplete="off" value="Gesture" checked>
+                        <label class="btn btn-outline-success" for="btnradio1">Gesture</label>
+                        <input type="radio" class="btn-success btn-check " name="btnradio" id="btnradio2" autocomplete="off" value="Gaze">
+                        <label class="btn btn-outline-success" for="btnradio2">Gaze</label>
+                      </div>
                 </div>
                 <canvas id="pdf-render"></canvas>
                 </div>

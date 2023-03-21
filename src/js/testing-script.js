@@ -2,15 +2,52 @@ const canvasDiv = document.getElementById('pdf-render');
 const LEFT_CUTOFF=canvasDiv.getBoundingClientRect().left;
 const RIGHT_CUTOFF=canvasDiv.getBoundingClientRect().right;
 const RIGHT_END=window.screen.width;
-url = localStorage.getItem('url')
-console.log(url)
+const url=localStorage.getItem('url');
 let startLooktime=Number.POSITIVE_INFINITY
-const delay = 70
+const delay = 50
 let timestamp=0
-let toggleInput=true //false for gaze, true for handtracking
+
+let pageNum=JSON.parse(localStorage.getItem('pageNum'))
+
+const radios = document.querySelectorAll('input[name="btnradio"]');
+let selectedValue;
+console.log(radios);for (const radio of radios) {
+  radio.addEventListener('change', () => {
+    const selectedValue = document.querySelector('input[name="btnradio"]:checked').value;
+    localStorage.setItem('selectedValue', selectedValue);
+    localStorage.setItem('pageNum',JSON.stringify(pageNum))
+    location.reload();
+    // perform action or update UI based on selectedValue
+  });
+}
+
+
+
+const storedValue = localStorage.getItem('selectedValue');
+if (storedValue) {
+  const radio = document.querySelector(`input[name="btnradio"][value="${storedValue}"]`);
+  radio.checked = true;
+  // perform action or update UI based on storedValue
+  if (localStorage.getItem('pageNum')){
+        pageNum=JSON.parse(localStorage.getItem('pageNum'))
+    }
+    console.log("pageNum",pageNum)
+}
+
+console.log(selectedValue)
+
+
+window.addEventListener('beforeunload', function(event) {
+    // Check if the unload event is also fired
+    if (event.type === 'unload') {
+      // Set the pageNum variable in localStorage to 1
+      localStorage.clear();
+    }
+  });
+
 let lookDirection=null
 
-if (toggleInput==true){
+if (selectedValue==="Gesture" || storedValue==="Gesture"){
 let handsfree = new Handsfree({hands: true,maxNumHands:2,minTrackingConfidence:0.7})
 handsfree.enablePlugins('browser')
 handsfree.start()
@@ -39,7 +76,7 @@ handsfree.use('logger', data =>{
                 }
                 i+=1
             }
-            else if (inDrag==true && data.hands.pinchState[1][0]=="released" && data.hands.pointer[1].x<RIGHT_CUTOFF){
+            else if (inDrag==true && data.hands.pinchState[1][0]=="released" && data.hands.pointer[1].x<RIGHT_CUTOFF && data.hands.pointer[1].x>LEFT_CUTOFF){
                 console.log(data.hands.pinchState[1][0],i)
                 inDrag=false
                 distance=data.hands.pointer[1].x-startDrag
@@ -131,8 +168,7 @@ handsfree.use('logger', data =>{
                 }
         })
 }
-let pdfDoc=null,
-pageNum=1,
+let pdfDoc=null;
 pageIsRendering=false;
 pageNumispending=null;
 

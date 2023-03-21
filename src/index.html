@@ -7,24 +7,23 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/style.css">
-        <script src="./js/webgazer.js"></script>
         <!-- <script src="./js/script.js" defer></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 
     </head>
     <body>
-        <form action="viewer.html" class="pdf-input">
+        <form action="test.html" class="pdf-input">
             <input type="file" accept=".pdf" class="btn" id="pdf-file">
-            <button type="submit" class="btn" id="submit-btn">View PDF</button>
+            <button type="submit" class="btn" id="submit-btn" value="Submit">View PDF</button>
         </form>
         <script>
-            webgazer.begin()
             const fileElement=document.getElementById('pdf-file')
             let fileName=null
             fileElement.addEventListener('input',event => {
             fileName=fileElement.files[0].name
             console.log(fileName)
             localStorage.setItem('url','../docs/'+fileName)
+            localStorage.setItem('pageNum',JSON.stringify(1))
             })
         </script>
     </body>
