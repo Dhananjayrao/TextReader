@@ -1,34 +1,99 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/style.css">
-        <!-- <script src="./js/script.js" defer></script> -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-
-    </head>
-    <body>
-        <form action="test.html" class="pdf-input">
-            <input type="file" accept=".pdf" class="btn" id="pdf-file">
-            <button type="submit" class="btn" id="submit-btn" value="Submit">View PDF</button>
-        </form>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <title>Welcome</title>
+</head>
+<body style="background-color: #1B4965;">
+    <br>
+    <div class="container text-center">
+        <h1 style="color: aliceblue;">Gesture Based Text Reader</h1>
+    </div>
+    <br>
+    <br>
+    <div class="container w-50 p-3 d-flex justify-content-center">
+        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+            How To Use   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+            </svg>
+          </button>
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">How To Use</h5>
+                </div>
+                <div class="modal-body">
+                  <h2>Getting Started</h2>
+                  To get started, Insert a pdf file you wish to read and click View PDF
+                  The translucent gray pointer indicates where your gaze or hand movement is registered
+                  <br>
+                  <br>
+                  <h2>Gesture : Navigation using your hands</h2>
+                  <h4>Next Page</h4>
+                  <ul>
+                    <li>To navigate to the next page, make a pinching gesture using your right index finger and your thumb anywhere in the portion to the right of your page</li>
+                    <li>Hold this pinching gesture, drag your hand until you reach inside the page</li>
+                    <li>Release your pinched hand and you should be navigated to the next page</li>
+                  </ul>
+                  <h4>Previous Page</h4>
+                  <ul>
+                    <li>To navigate to the next page, make a pinching gesture using your left index finger and your thumb anywhere in the portion to the left of your page</li>
+                    <li>Make a pinching gesture using your right index finger and your thumb, drag your hand until you reach inside the page</li>
+                    <li>Release your pinched hand and you should be navigated to the previous page</li>
+                  </ul>
+                  <h4>Close File</h4>
+                  <ul>
+                    <li>To close the file and move back to the home screen, make a closed hand gesture by touching all of your finger tips together and maintain this gesture for a couple of seconds until you are navigated back to the home screen</li>
+                  </ul>
+                  <br>
+                
+                  <h2>Gaze : Navigation using your eyes</h2>
+                  <h4>Next Page</h4>
+                  <ul>
+                    <li>Stare at the right side of the screen for a second, anywhere after the pdf page ends to move to the next page</li>
+                  </ul>
+                  <h4>Previous Page</h4>
+                  <ul>
+                    <li>Stare at the left side of the screen for a second, anywhere before the pdf starts to move to the previous page</li>
+                  </ul>
+                  <h4>Close File</h4>
+                  <ul>
+                    <li>To close the file and move back to the home screen, close your eyes for a couple of seconds until you are navigated back to the home screen</li>
+                  </ul>
+                </div>
+                <br>
+                  <br>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+    <br>
+    <form class="container w-50 p-3 shadow-lg rounded" style="background-color: aliceblue;" action="test.html">
+        <div class="form-group ">
+            <label class="form-label" for="pdf-file">Upload the document you wan't to read</label>
+            <input type="file" accept=".pdf" class="form-control" id="pdf-file" />
+        </div>
+        <br>
+        <button type="submit" class="btn btn-secondary" id="submit-btn" value="Submit">View Pdf</button>
         <script>
             const fileElement=document.getElementById('pdf-file')
             let fileName=null
             fileElement.addEventListener('input',event => {
             fileName=fileElement.files[0].name
             console.log(fileName)
-            localStorage.setItem('url','../docs/'+fileName)
+            localStorage.setItem('url','./docs/'+fileName)
             localStorage.setItem('pageNum',JSON.stringify(1))
             })
         </script>
-    </body>
+    </form>
+</body>
 </html>
-
-
-
-

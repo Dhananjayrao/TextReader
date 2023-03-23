@@ -8,6 +8,7 @@ let startLooktime=Number.POSITIVE_INFINITY
 const delay = 50
 let timestamp=0
 let eyeCount=0
+let handCount=0
 let pageNum=JSON.parse(localStorage.getItem('pageNum'))
 
 const radios = document.querySelectorAll('input[name="btnradio"]');
@@ -22,6 +23,16 @@ console.log(radios);for (const radio of radios) {
   });
 }
 
+document.getElementById("txtpageNum").addEventListener("keyup", function(event) {
+    if (event.key==="Enter"){
+        let input = document.getElementById("txtpageNum").value.trim();
+        if (!isNaN(input)) {
+            pageNum = Number(input);
+            renderPage(pageNum);
+        }
+        document.getElementById("txtpageNum").value = '';
+}
+});
 
 
 const storedValue = localStorage.getItem('selectedValue');
@@ -32,10 +43,8 @@ if (storedValue) {
   if (localStorage.getItem('pageNum')){
         pageNum=JSON.parse(localStorage.getItem('pageNum'))
     }
-    console.log("pageNum",pageNum)
 }
 
-console.log(selectedValue)
 
 
 window.addEventListener('beforeunload', function(event) {
@@ -59,14 +68,13 @@ handsfree.use('logger', data =>{
     if (data==null) return
     if (data.hands && data.hands.pointer && data.hands.pinchState){
         if (data.hands.pointer[1].x){
-            if (data.hands.pinchState[1][0]=="held" && data.hands.pinchState[1][1]=="held" && data.hands.pinchState[1][2]=="held"){
-                window.location.href="index.html"
-            }
-            if (data.hands.pointer[1].x<RIGHT_CUTOFF && data.hands.pointer[1].x>LEFT_CUTOFF && (data.hands.pinchState[1][0]=="released" || data.hands.pinchState[1][0]=="")){
-                handsfree.plugin.palmPointers.hidePointers()
-            }
-            else if (data.hands.pointer[1].x){
-                handsfree.plugin.palmPointers.showPointers()
+            if (data.hands.pinchState[1][0]=="held" && data.hands.pinchState[1][1]=="held" && data.hands.pinchState[1][2]=="held" && data.hands.pinchState[1][3]=="held"){
+                handCount+=1
+                if (handCount>=50){
+                    window.location.href="index.html"
+                }
+            }else{
+                handCount=0
             }
             if (data.hands.pinchState[1][0]=="start" && inDrag==false && data.hands.pointer[1].x>RIGHT_CUTOFF){
                 inDrag=true
@@ -81,7 +89,6 @@ handsfree.use('logger', data =>{
                 i+=1
             }
             else if (inDrag==true && data.hands.pinchState[1][0]=="released" && data.hands.pointer[1].x<RIGHT_CUTOFF && data.hands.pointer[1].x>LEFT_CUTOFF){
-                console.log(data.hands.pinchState[1][0],i)
                 inDrag=false
                 distance=data.hands.pointer[1].x-startDrag
                 async function checkrighthand(distance){
@@ -96,13 +103,13 @@ handsfree.use('logger', data =>{
             i+=1
         }
         if (data.hands.pointer[0].x){
-            if (data.hands.pinchState[0][0]=="held" && data.hands.pinchState[0][1]=="held" && data.hands.pinchState[0][2]=="held"){
-                window.location.href="index.html"
-            }
-            if (data.hands.pointer[0].x<RIGHT_CUTOFF && data.hands.pointer[0].x>LEFT_CUTOFF && (data.hands.pinchState[0][0]=="released" || data.hands.pinchState[0][0]=="")){
-                handsfree.plugin.palmPointers.hidePointers()
-            }else if (data.hands.pointer[0].x){
-                handsfree.plugin.palmPointers.showPointers()
+            if (data.hands.pinchState[0][0]=="held" && data.hands.pinchState[0][1]=="held" && data.hands.pinchState[0][2]=="held" && data.hands.pinchState[0][3]=="held"){
+                handCount+=1
+                if (handCount>=50){
+                    window.location.href="index.html"
+                }
+            }else{
+                handCount=0
             }
             if (data.hands.pinchState[0][0]=="start" && inDrag==false && data.hands.pointer[0].x<LEFT_CUTOFF){
                 inDrag=true
@@ -141,16 +148,13 @@ handsfree.use('logger', data =>{
     handsfree.use('logger', data => {
             if (data==null) return
             if(data.weboji.isDetected){
-                console.log(data.weboji.translation[2])
                 if (data.weboji.translation[2]<0.19){ //check to see if user is too far away from the screen
-                    alert('you may be too far away from the screen to reliably detect your gaze, please readjust your position')
+                    alert('You may be too far away from the screen to reliably detect your gaze, please readjust your position')
                 }
             }
-            //This may be unreliable and inconsistent
             if (data.weboji.state.eyeLeftClosed==true && data.weboji.state.eyeRightClosed==true){ //go back to index by closing your eyes
-            console.log("eyes",data.weboji.state.eyeLeftClosed,data.weboji.state.eyeRightClosed,eyeCount)
             eyeCount+=1
-            if (eyeCount>=4){
+            if (eyeCount>=20){
                 window.location.href="index.html";
             }
             }else{

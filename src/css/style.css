@@ -1,14 +1,17 @@
 
 body{
-    display:flex;
-    flex-wrap: wrap;
-    height: 97vh;
-    width: 100vw;
-    margin:0;
-    padding:0;
-    font-family: sans-serif;
-    justify-content: center;
-    background: #1B4965;
+  background: #1B4965;
+}
+.index{
+  display:flex;
+  flex-wrap: wrap;
+  height: 97vh;
+  width: 100vw;
+  margin:0;
+  padding:0;
+  font-family: sans-serif;
+  justify-content: center;
+
 }
 top-bar{
     display: flex;
@@ -22,7 +25,8 @@ pdf-viewer{
 canvas{
     display: inline;
     width:50vw;
-    height:94vh;
+    height:93vh;
+    margin-top: 1vh;
 }
 /* .pdf-input{
     display: flex;
@@ -65,7 +69,7 @@ canvas{
     background-color: #62B6CB;
   }
 
-  .btn{
+  /* .btn{
         position: relative;
         display: inline-block;
         padding: 1vh 2vh;
@@ -74,10 +78,14 @@ canvas{
         overflow: hidden;
         transition: .5s;
         border-radius: 2% 2%;
-  }
+  } */
 
   .handsfree-pointer {
     background-color: #cbcbce !important;
     border-color:#cbcbce !important;
     opacity:0.6 !important;
+  }
+
+  #txtpageNum{
+    margin-right: 0.5vh;
   }

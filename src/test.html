@@ -4,14 +4,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/handsfree@8.5.1/build/lib/handsfree.js"></script>
   </head>
-  
   <body>
     <!DOCTYPE html>
         <html>
             <head>
                 <meta charset="utf-8">
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <title></title>
+                <title>Text Reader</title>
                 <meta name="description" content="">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <link rel="stylesheet" href="css/style.css">
@@ -21,20 +20,80 @@
                 <script src="./js/testing-script.js" defer></script>
             </head>
             <body>
-                <div class="pdf-viewer">
-                    <br>
-                    <div class="top-bar">
-                        <button class="btn btn-primary" id="prev-page">Prev Page</button>
-                        <button class="btn btn-primary" id="next-page">Next Page</button> 
-                    <span style="color: aliceblue;">Page <span class="page-info" ><span id='page-num'></span> of <span id="page-count"></span></span></span> 
-                    <div class="btn-group float-end" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class=" btn-success btn-check " name="btnradio" id="btnradio1" autocomplete="off" value="Gesture" checked>
-                        <label class="btn btn-outline-success" for="btnradio1">Gesture</label>
-                        <input type="radio" class="btn-success btn-check " name="btnradio" id="btnradio2" autocomplete="off" value="Gaze">
-                        <label class="btn btn-outline-success" for="btnradio2">Gaze</label>
-                      </div>
+                <div class="index">
+                    <div class="pdf-viewer mt-2 mb-2">
+                        <div class="top-bar">
+                            <button class="btn btn-info" id="prev-page">Prev Page</button>
+                            <button class="btn btn-info" id="next-page">Next Page</button> 
+                        <span style="color: aliceblue;">Page <span class="page-info" ><span id='page-num'></span> of <span id="page-count"></span></span></span> 
+                        <button class="btn btn-info float-end" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+                          </svg></button>
+                          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLongTitle">How To Use</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <h2>Getting Started</h2>
+                                    To get started, Insert a pdf file you wish to read and click View PDF
+                                    The translucent gray pointer indicates where your gaze or hand movement is registered
+                                    <br>
+                                    <br>
+                                    <h2>Gesture : Navigation using your hands</h2>
+                                    <h4>Next Page</h4>
+                                    <ul>
+                                      <li>To navigate to the next page, make a pinching gesture using your right index finger and your thumb anywhere in the portion to the right of your page</li>
+                                      <li>Hold this pinching gesture, drag your hand until you reach inside the page</li>
+                                      <li>Release your pinched hand and you should be navigated to the next page</li>
+                                    </ul>
+                                    <h4>Previous Page</h4>
+                                    <ul>
+                                      <li>To navigate to the next page, make a pinching gesture using your left index finger and your thumb anywhere in the portion to the left of your page</li>
+                                      <li>Make a pinching gesture using your right index finger and your thumb, drag your hand until you reach inside the page</li>
+                                      <li>Release your pinched hand and you should be navigated to the previous page</li>
+                                    </ul>
+                                    <h4>Close File</h4>
+                                    <ul>
+                                      <li>To close the file and move back to the home screen, make a closed hand gesture by touching all of your finger tips together and maintain this gesture for a couple of seconds until you are navigated back to the home screen</li>
+                                    </ul>
+                                    <br>
+                                    <h2>Gaze : Navigation using your eyes</h2>
+                                    <h4>Next Page</h4>
+                                    <ul>
+                                      <li>Stare at the right side of the screen for a second, anywhere after the pdf page ends to move to the next page</li>
+                                    </ul>
+                                    <h4>Previous Page</h4>
+                                    <ul>
+                                      <li>Stare at the left side of the screen for a second, anywhere before the pdf starts to move to the previous page</li>
+                                    </ul>
+                                    <h4>Close File</h4>
+                                    <ul>
+                                      <li>To close the file and move back to the home screen, close your eyes for a couple of seconds until you are navigated back to the home screen</li>
+                                    </ul>
+                                  </div>
+                                  <br>
+                                    <br>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <div class="btn-group float-end ms-auto" role="group" aria-label="Basic radio toggle button group">
+                            <input id="txtpageNum" name="txtpageNum" placeholder="Enter Page Number">
+                            <input type="radio" class=" btn-success btn-check " name="btnradio" id="btnradio1" autocomplete="off" value="Gesture" checked>
+                            <label class="btn btn-outline-success" for="btnradio1">Gesture</label>
+                            <input type="radio" class="btn-success btn-check " name="btnradio" id="btnradio2" autocomplete="off" value="Gaze">
+                            <label class="btn btn-outline-success" for="btnradio2">Gaze</label>
+                          </div> &nbsp;
+                          
+                    </div>
+                    <canvas id="pdf-render"></canvas>
+                    </div>
                 </div>
-                <canvas id="pdf-render"></canvas>
-                </div>
+                
             </body>
         </html>
