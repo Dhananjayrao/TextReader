@@ -1,11 +1,10 @@
-
 body{
   background: #1B4965;
+  overflow: hidden !important;
 }
 .index{
   display:flex;
   flex-wrap: wrap;
-  height: 97vh;
   width: 100vw;
   margin:0;
   padding:0;
@@ -13,25 +12,16 @@ body{
   justify-content: center;
 
 }
-top-bar{
-    display: flex;
-    justify-content: center;
-    height:3vh !important;
-}
 pdf-viewer{
     display:flex;
-    flex-direction:column
+    flex-direction:column;
 }
 canvas{
     display: inline;
     width:50vw;
-    height:93vh;
     margin-top: 1vh;
+    height: 93vh;
 }
-/* .pdf-input{
-    display: flex;
-    justify-content: center;
-} */
 #overlay {
     position: fixed;
     width: 100%;
@@ -45,16 +35,6 @@ canvas{
     cursor: pointer;
   }
 
-  /* #overlay {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }*/
   
   .pdf-input {
     display: flex;
@@ -69,22 +49,13 @@ canvas{
     background-color: #62B6CB;
   }
 
-  /* .btn{
-        position: relative;
-        display: inline-block;
-        padding: 1vh 2vh;
-        background-color: #BEE9E8;
-        font-size: 16px;
-        overflow: hidden;
-        transition: .5s;
-        border-radius: 2% 2%;
-  } */
-
   .handsfree-pointer {
     background-color: #cbcbce !important;
     border-color:#cbcbce !important;
     opacity:0.6 !important;
+    animation: none !important;
   }
+
 
   #txtpageNum{
     margin-right: 0.5vh;

@@ -5,7 +5,7 @@ const RIGHT_END=window.screen.width;
 const HEIGHT=window.screen.height;
 const url=localStorage.getItem('url');
 let startLooktime=Number.POSITIVE_INFINITY
-const delay = 50
+const delay = 70
 let timestamp=0
 let eyeCount=0
 let handCount=0
@@ -57,8 +57,10 @@ window.addEventListener('beforeunload', function(event) {
 
 let lookDirection=null
 
+
+
 if (selectedValue==="Gesture" || storedValue==="Gesture"){
-let handsfree = new Handsfree({hands: true,maxNumHands:2,minTrackingConfidence:0.7})
+let handsfree = new Handsfree({hands: true,maxNumHands:2,minTrackingConfidence:0.7, plugin: {pinchScroll: {enabled: true,}}})
 handsfree.enablePlugins('browser')
 handsfree.start()
 let inDrag=false
@@ -69,8 +71,9 @@ handsfree.use('logger', data =>{
     if (data.hands && data.hands.pointer && data.hands.pinchState){
         if (data.hands.pointer[1].x){
             if (data.hands.pinchState[1][0]=="held" && data.hands.pinchState[1][1]=="held" && data.hands.pinchState[1][2]=="held" && data.hands.pinchState[1][3]=="held"){
+                console.log(data.hands.pinchState,handCount)
                 handCount+=1
-                if (handCount>=50){
+                if (handCount>=30){
                     window.location.href="index.html"
                 }
             }else{
@@ -105,7 +108,7 @@ handsfree.use('logger', data =>{
         if (data.hands.pointer[0].x){
             if (data.hands.pinchState[0][0]=="held" && data.hands.pinchState[0][1]=="held" && data.hands.pinchState[0][2]=="held" && data.hands.pinchState[0][3]=="held"){
                 handCount+=1
-                if (handCount>=50){
+                if (handCount>=30){
                     window.location.href="index.html"
                 }
             }else{
@@ -142,27 +145,29 @@ handsfree.use('logger', data =>{
 })
 }else{
     handsfree = new Handsfree({weboji:true})
-    console.log('handsfree',handsfree)  
     handsfree.enablePlugins('browser')
     handsfree.start();
-    handsfree.use('logger', data => {
+    handsfree.use('logger', data => { 
             if (data==null) return
             if(data.weboji.isDetected){
                 if (data.weboji.translation[2]<0.19){ //check to see if user is too far away from the screen
                     alert('You may be too far away from the screen to reliably detect your gaze, please readjust your position')
                 }
             }
-            if (data.weboji.state.eyeLeftClosed==true && data.weboji.state.eyeRightClosed==true){ //go back to index by closing your eyes
-            eyeCount+=1
-            if (eyeCount>=20){
-                window.location.href="index.html";
-            }
-            }else{
-                eyeCount=0
-            }
+            // console.log(data.weboji.state.eyesClosed,eyeCount)
+            if (data.weboji.state.eyesClosed==true){
+                //go back to index by closing your eyes
+                eyeCount+=1
+                if (eyeCount>=10){
+                    eyeCount=0
+                    window.location.href="index.html";
+                }
+                }else{
+                    eyeCount=0
+                }
             if (data.weboji && data.weboji.pointer) {
                 const xValue = data.weboji.pointer.x;
-                const yValue=data.weboji.pointer.y
+                const yValue=data.weboji.pointer.y;
                 if (xValue<-50 || xValue>RIGHT_END+50 || yValue<0 || yValue>HEIGHT) return
                 if (xValue<LEFT_CUTOFF && lookDirection!=='LEFT'){
                     startLooktime=timestamp
